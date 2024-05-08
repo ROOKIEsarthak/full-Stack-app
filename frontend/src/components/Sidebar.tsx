@@ -1,13 +1,48 @@
-export default function Sidebar() {
+import { useState, useRef } from "react";
+
+export default function Sidebar({ size, setSidebarSize }) {
+  const sidebarRef = useRef(null);
+  const [isResizing, setIsResizing] = useState(false);
+  const [initialPosition, setInitialPosition] = useState({ x: 0, y: 0 });
+
+  const startResize = (event) => {
+    setIsResizing(true);
+    setInitialPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
+  const stopResize = () => {
+    setIsResizing(false);
+  };
+
+  const resizeSidebar = (event) => {
+    if (!isResizing) return;
+    const deltaX = event.clientX - initialPosition.x;
+    const deltaY = event.clientY - initialPosition.y;
+
+    setSidebarSize((prevState) => ({
+      width: prevState.width + deltaX,
+      height: prevState.height + deltaY,
+    }));
+
+    setInitialPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center mt-10 w-[15vw] ml-10 bg-[#161C23] rounded-lg">
-      <div className="flex flex-col justify-start py-20 h-full gap-10">
-        <div className="border-b border-[#1E2328] w-full">SideBar</div>
-        <div className="border-b border-[#1E2328] w-full focus:text-[#E2C19D]"></div>
-      </div>
-      <button className="bg-[#4B3C2B] p-10 rounded-xl flex items-center justify-center w-full">
-        Support
-      </button>
+    <div
+      className="flex flex-col justify-center border-2 border-dashed cursor-pointer"
+      style={{ width: size.width, height: size.height }}
+      ref={sidebarRef}
+      onMouseDown={startResize}
+      onMouseUp={stopResize}
+      onMouseMove={resizeSidebar}
+    >
+      <div>Sidebar</div>
     </div>
   );
 }
