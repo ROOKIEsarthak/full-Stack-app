@@ -1,32 +1,35 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "type": "module",
-  "description": "",
   "main": "index.js",
+  "module": "commonjs",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+    "start": "ts-node-dev --respawn --transpile-only --exit-child src/server.ts",
+    "db:migrate": "npx prisma migrate dev --name user-entity --create-only && npx prisma generate",
+    "db:push": "npx prisma db push"
   },
-  "keywords": [
-    "javascript",
-    "backend",
-    "coffee"
-  ],
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": [
+      "es6",
+      "dom"
+    ]
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "aws-sdk": "^2.1613.0",
-    "bcrypt": "^5.1.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.6.0",
-    "mongoose": "^8.3.3",
-    "nodemon": "^3.1.0"
-  },
+  "description": "",
   "devDependencies": {
-    "@types/node": "^20.12.8"
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.11",
+    "prisma": "^5.13.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.13.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
   }
 }
